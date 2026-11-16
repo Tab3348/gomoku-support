@@ -21,12 +21,14 @@ function board() {
  [[30,40,0],[40,40,1],[40,50,0],[50,50,1],[50,60,0],[60,40,1],[60,70,0],[70,80,0],[60,60,1]].forEach(([x,y,w])=>{const s=node('i',undefined,'stone'+(w?' white':''));s.style.left=x+'%';s.style.top=y+'%';art.append(s);});return art;
 }
 function render() {
- const d=CONTENT[language],u=d.ui;document.documentElement.lang=language;document.title='头头❤️秋秋 · '+u.nav[pages.indexOf(page)];
+ const d=CONTENT[language],u=d.ui;document.documentElement.lang=language;document.title=u.productName+' · '+u.nav[pages.indexOf(page)];
+ $('meta[name="description"]').content=u.description;$('.brand').textContent=u.productName;
+ const named=text=>text.replaceAll('{appName}',u.productName);
  $('#language').value=language;$('#language-label').textContent=u.language;$('.brand').href=route('index');
  const nav=$('nav');nav.replaceChildren();pages.forEach((p,i)=>{const a=link(u.nav[i],route(p));if(p===page)a.setAttribute('aria-current','page');nav.append(a);});
  const main=$('#main');main.replaceChildren();
  if(page==='index'){
-  const hero=node('section',undefined,'hero'),text=node('div');text.append(node('p',u.eyebrow,'eyebrow'),node('h1',u.headline),node('p',u.intro,'intro'));
+  const hero=node('section',undefined,'hero'),text=node('div');text.append(node('p',u.eyebrow,'eyebrow'),node('h1',u.headline),node('p',named(u.intro),'intro'));
   const actions=node('div',undefined,'actions');actions.append(link(u.cta,route('how-to-play'),'button'),link(u.support,route('support'),'button secondary'));text.append(actions);hero.append(text,board());main.append(hero);
   const features=node('section',undefined,'features');u.labels.forEach((title,i)=>{const f=node('article');f.append(node('span','0'+(i+1),'feature-number'),node('h3',title),node('p',u.descs[i]));features.append(f);});main.append(features,contact(u));
  } else {
@@ -35,11 +37,11 @@ function render() {
   if(page==='privacy') {paragraphs(article,d.privacy);article.append(node('h2',u.hosting));paragraphs(article,u.hostingBody);article.append(link(u.hostLink,'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement'));}
   if(page==='terms')paragraphs(article,d.terms);
   if(page==='how-to-play')paragraphs(article,d.help);
-  if(page==='about')paragraphs(article,u.about);
+  if(page==='about')paragraphs(article,named(u.about));
   if(page==='support') {paragraphs(article,u.supportIntro);article.append(node('h2',u.faqTitle));u.faq.forEach(([q,a])=>{const detail=node('details');detail.append(node('summary',q),node('p',a));article.append(detail);});}
   article.append(contact(u));main.append(article);
  }
- const footer=$('footer');footer.replaceChildren(node('p','头头❤️秋秋 · '+u.footer),node('p',u.pending,'pending'));
+ const footer=$('footer');footer.replaceChildren(node('p',u.productName+' · '+u.footer),node('p',u.pending,'pending'));
 }
 $('#language').addEventListener('change',e=>{language=e.target.value;const url=new URL(location.href);url.searchParams.set('lang',language);history.replaceState(null,'',url);render();});
 render();
