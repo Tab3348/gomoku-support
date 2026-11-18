@@ -35,7 +35,7 @@ function render() {
   const article=node('article',undefined,'article');article.append(node('p',u.eyebrow,'eyebrow'),node('h1',u.nav[pages.indexOf(page)]));
   if(page==='privacy'||page==='terms')article.append(node('aside',u.draft,'notice'));
   if(page==='privacy') {paragraphs(article,d.privacy);article.append(node('h2',u.hosting));paragraphs(article,u.hostingBody);article.append(link(u.hostLink,'https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement'));}
-  if(page==='terms')paragraphs(article,d.terms);
+  if(page==='terms'){paragraphs(article,d.terms);article.append(link('Apple Standard EULA','https://www.apple.com/legal/internet-services/itunes/dev/stdeula/'));}
   if(page==='how-to-play')paragraphs(article,d.help);
   if(page==='about')paragraphs(article,named(u.about));
   if(page==='support') {paragraphs(article,u.supportIntro);article.append(node('h2',u.faqTitle));u.faq.forEach(([q,a])=>{const detail=node('details');detail.append(node('summary',q),node('p',a));article.append(detail);});}
